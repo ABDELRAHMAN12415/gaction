@@ -18,6 +18,7 @@ jobs:
                 cat dragon.txt
             
     show_README:
+        needs: echo
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
@@ -26,3 +27,5 @@ jobs:
               run: |
                 ls -lhrt
                 cat readme.md
+                chmod +x ./script1.sh
+                ./script1.sh
