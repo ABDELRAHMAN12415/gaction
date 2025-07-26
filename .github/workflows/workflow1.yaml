@@ -27,5 +27,5 @@ jobs:
               run: |
                 ls -lhrt
                 cat readme.md; echo
-                chmod +x ./script1.sh
+                chmod +x script1.sh
                 ./script1.sh
