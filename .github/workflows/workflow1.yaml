@@ -26,6 +26,6 @@ jobs:
             - name: Run a script
               run: |
                 ls -lhrt
-                cat readme.md
+                cat readme.md\n
                 chmod +x ./script1.sh
                 ./script1.sh
