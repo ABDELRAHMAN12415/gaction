@@ -25,4 +25,4 @@ jobs:
             - name: Run a script
               run: |
                 ls -lhrt
-                cat README.md
+                cat readme.md
