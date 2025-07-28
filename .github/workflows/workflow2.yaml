@@ -1,0 +1,32 @@
+name: Docker Build and Push to ACR
+
+on:
+  workflow_dispatch:
+
+env:
+  CONTAINER_REGISTRY: "${{ vars.ACR_SERVER }}"    
+  DOCKER_USERNAME: "${{ secrets.ACR_USERNAME }}"       
+  DOCKER_PASSWORD: "${{ secrets.ACR_PASSWORD }}"       
+  IMAGE_NAME: github-actions-nginx
+  IMAGE_TAG: abdelrahman-ahmed
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Docker Build
+        run: |
+          docker build -t $CONTAINER_REGISTRY/$IMAGE_NAME:$IMAGE_TAG .
+
+      - name: Docker Login to ACR
+        run: |
+          echo "$DOCKER_PASSWORD" | docker login $CONTAINER_REGISTRY -u "$DOCKER_USERNAME" --password-stdin
+
+      - name: Docker Push to ACR
+        run: |
+          docker push $CONTAINER_REGISTRY/$IMAGE_NAME:$IMAGE_TAG
+
