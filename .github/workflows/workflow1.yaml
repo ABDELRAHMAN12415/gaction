@@ -9,13 +9,6 @@ jobs:
             - name: Welcome 
               run: |
                 echo "Hello world"
-                
-            - name: Install cowsay
-              run: |
-                sudo apt update -y
-                sudo apt install cowsay -y
-                cowsay -f dragon "Run for cover, I am a DRAGON....RAWR" >> dragon.txt
-                cat dragon.txt
             
     show_README:
         needs: echo
@@ -23,9 +16,38 @@ jobs:
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
+
             - name: Run a script
               run: |
                 ls -lhrt
                 cat readme.md; echo
                 chmod +x script1.sh
                 ./script1.sh
+
+            - name: Install cowsay
+              run: |
+                sudo apt update -y
+                sudo apt install cowsay -y
+                cowsay -f dragon "Run for cover, I am a DRAGON....RAWR" >> dragon.txt
+                cat dragon.txt
+            
+            - name: upload artifact
+              uses: actions/upload-artifact@v4
+              with:
+                name: dragon-artifact
+                path: dragon.txt
+                retention-days: 1
+
+    cat_artifact:
+        needs: show_README
+        runs-on: ubuntu-latest
+        steps:
+            - name: Download artifact
+              uses: actions/download-artifact@v4
+              with:
+                name: dragon-artifact
+
+            - name: Display artifact content
+              run: |
+                ls -lhrt
+                cat dragon.txt
